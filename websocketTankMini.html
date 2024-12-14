@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      html {
+        height: 100%;
+      }
+      body {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .leftContainer {
+        position: absolute;
+        width: 30vw;
+        height: 100%;
+        left: 0;
+        top: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .rightContainer {
+        position: absolute;
+        width: 30vw;
+        height: 100%;
+        right: 0;
+        top: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      div {
+        box-sizing: border-box;
+      }
+
+      div > div {
+        height: 30vw;
+        width: 30vw;
+        border: 1px solid black;
+      }
+      #fs {
+        border: 1px solid black;
+        width: 5vw;
+        height: 5vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="fs">FS</div>
+    <div class="leftContainer">
+      <div id="LevaNapredGO"></div>
+      <div id="LevaNazadGO"></div>
+    </div>
+    <div class="rightContainer">
+      <div id="DesnaNapredGO"></div>
+      <div id="DesnaNazadGO"></div>
+    </div>
+
+    <script>
+      var gateway = `ws://192.168.4.1/`;
+      var websocket;
+      window.addEventListener("load", onload);
+
+
+      function onload(event) {
+        initWebSocket();
+      }
+      function onMessage() {
+        console.log("fuck you");
+      }
+
+      function initWebSocket() {
+        console.log("Trying to open a WebSocket connection…");
+        websocket = new WebSocket(gateway);
+        websocket.onopen = onOpen;
+        websocket.onclose = onClose;
+        websocket.onmessage = onMessage;
+      }
+
+      function onOpen(event) {
+        console.log("Connection opened");
+      }
+
+      function onClose(event) {
+        console.log("Connection closed");
+        setTimeout(initWebSocket, 2000);
+      }
+
+      function sendRequest(value) {
+        websocket.send(value);
+      }
+      const FS = document.getElementById("fs");
+      fs.addEventListener("click", () => {
+        document.documentElement.requestFullscreen();
+      });
+
+      const LevaNapredGO = document.getElementById("LevaNapredGO");
+      const LevaNazadGO = document.getElementById("LevaNazadGO");
+      const DesnaNapredGO = document.getElementById("DesnaNapredGO");
+      const DesnaNazadGO = document.getElementById("DesnaNazadGO");
+
+      LevaNapredGO.addEventListener("touchstart", (e) => {
+        sendRequest("LevaNapredGO");
+        LevaNapredGO.style.background = "red";
+      });
+
+      LevaNapredGO.addEventListener("touchend", (e) => {
+        LevaNapredGO.style.background = "none";
+        sendRequest("LevaNapredSTOP");
+      });
+
+      LevaNazadGO.addEventListener("touchstart", (e) => {
+        sendRequest("LevaNazadGO");
+        LevaNazadGO.style.background = "red";
+      });
+
+      LevaNazadGO.addEventListener("touchend", (e) => {
+        sendRequest("LevaNazadSTOP");
+        LevaNazadGO.style.background = "none";
+      });
+
+      DesnaNapredGO.addEventListener("touchstart", (e) => {
+        sendRequest("DesnaNapredGO");
+        DesnaNapredGO.style.background = "red";
+      });
+
+      DesnaNapredGO.addEventListener("touchend", (e) => {
+        DesnaNapredGO.style.background = "none";
+        sendRequest("DesnaNapredSTOP");
+      });
+
+      DesnaNazadGO.addEventListener("touchstart", (e) => {
+        sendRequest("DesnaNazadGO");
+        DesnaNazadGO.style.background = "red";
+      });
+
+      DesnaNazadGO.addEventListener("touchend", (e) => {
+        DesnaNazadGO.style.background = "none";
+        sendRequest("DesnaNazadSTOP");
+      });
+    </script>
+  </body>
+</html>

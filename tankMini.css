@@ -1,0 +1,33 @@
+body{
+    margin: 0;
+}
+
+.leftContainer{
+    position: absolute;
+    width: 30vw;
+    height: 100%;
+    left: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid red;
+    justify-content: space-between;
+}
+
+.rightContainer{
+    position: absolute;
+    width: 30vw;
+    height: 100%;
+    right: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid red;
+    justify-content: space-between;
+}
+
+div>div{
+    height: 30vw;
+    width: 30vw;
+    border: 1px solid black;
+}

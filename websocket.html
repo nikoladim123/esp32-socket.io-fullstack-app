@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<!-- saved from url=(0054)file:///C:/Users/Windows%2010/Downloads/webSocket.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        #directionLeva {
+            position: absolute;
+            left: 20vw;
+            bottom: 10vh;
+            width: 20vw;
+            height: 20vw;
+            font-size: 5vw;
+        }
+
+        #directionDesna {
+            position: absolute;
+            right: 20vw;
+            bottom: 10vh;
+            width: 20vw;
+            height: 20vw;
+            font-size: 5vw;
+        }
+
+        #console {
+            position: absolute;
+            left: 11vw;
+            top: 1vw;
+            width: 15vw;
+            height: 10vw;
+            border: 1px solid black;
+        }
+
+        #console2 {
+            position: absolute;
+            right: 11vw;
+            top: 1vw;
+            width: 15vw;
+            height: 10vw;
+            ;
+            border: 1px solid black;
+        }
+
+        #slajder {
+            box-sizing: border-box;
+            position: relative;
+            border: 1px solid black;
+            height: 100vh;
+            width: 10vw;
+            overflow: hidden;
+        }
+
+        #slajdercolor {
+            pointer-events: none;
+            position: absolute;
+            width: 10vw;
+            height: 100vh;
+            left: 0;
+            top: 100vh;
+            background-color: green;
+        }
+
+
+        #slajderTwo {
+            box-sizing: border-box;
+            border: 1px solid black;
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 10vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #slajdercolor2 {
+            pointer-events: none;
+            position: absolute;
+            width: 10vw;
+            height: 100vh;
+            left: 0;
+            top: 100vh;
+            background-color: green;
+        }
+
+        #fs {
+            position: absolute;
+            top: 5vw;
+            left: 47.5vw;
+            background: lightgray;
+            height: 5vw;
+            width: 5vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="fs">FS</div>
+
+    <button id="directionLeva" type="button" name="button">D</button>
+    <button id="directionDesna" type="button" name="button">D</button>
+
+    <div id="slajder">
+        <div id="slajdercolor"></div>
+    </div>
+    <div id="slajderTwo">
+        <div id="slajdercolor2"></div>
+    </div>
+
+
+    <div id="console"></div>
+    <div id="console2"></div>
+
+    <script>
+        // ajax
+        // function sendRequest(name, value) {
+        //     var xhttp = new XMLHttpRequest();
+        //     xhttp.onreadystatechange = function() {
+        //         if (this.readyState == 4 && this.status == 200) {
+        //             return;
+        //         }
+        //     };
+        //     xhttp.open("GET", "http://192.168.4.1/?" + name + "=" + value, true);
+        //     xhttp.setRequestHeader('Connection', 'keep-alive');
+        //     xhttp.send();
+        // }
+
+        //ajax end
+
+        //   reverse/forward buttons
+        //   reverse/forward buttons
+        //   reverse/forward buttons
+
+            
+        // WEB SOCKET
+        var gateway = `ws://192.168.4.1/ws`;
+        var websocket;
+        window.addEventListener('load', onload);
+        var direction;
+
+        function onload(event) {
+            initWebSocket();
+        }
+        function onMessage(){
+            console.log('fuck you')
+        }
+
+        function initWebSocket() {
+            console.log('Trying to open a WebSocket connection…');
+            websocket = new WebSocket(gateway);
+            websocket.onopen = onOpen;
+            websocket.onclose = onClose;
+            websocket.onmessage = onMessage;
+        }
+        
+
+        function onOpen(event) {
+            console.log('Connection opened');
+        }
+
+        function onClose(event) {
+            console.log('Connection closed');
+            setTimeout(initWebSocket, 2000);
+        }
+
+        function submitForm() {
+            // const rbs = document.querySelectorAll('input[name="direction"]');
+            // direction;
+            // for (const rb of rbs) {
+            //     if (rb.checked) {
+            //         direction = rb.value;
+            //         break;
+            //     }
+            // }
+            }
+            function sendRequest(name, value){
+                websocket.send(value + "&" + name);
+            }
+            console.log("WTSSS")
+            // WEB SOCKET
+
+
+            var directionLeva = document.getElementById('directionLeva')
+            var directionDesna = document.getElementById('directionDesna')
+
+            var buttonStateLeva = "napredLeva";
+            directionLeva.addEventListener('click', () => {
+                if (buttonStateLeva === "napredLeva") {
+                    buttonStateLeva = "nazadLeva";
+                    directionLeva.innerText = 'R';
+                } else {
+                    buttonStateLeva = "napredLeva";
+                    directionLeva.innerText = 'D';
+                }
+
+                sendRequest(buttonStateLeva, '0');
+            })
+
+            var buttonStateDesna = "napredDesna";
+            directionDesna.addEventListener('click', () => {
+
+                if (buttonStateDesna === "napredDesna") {
+                    buttonStateDesna = "nazadDesna";
+                    directionDesna.innerText = 'R';
+                } else {
+                    buttonStateDesna = "napredDesna";
+                    directionDesna.innerText = 'D';
+                }
+
+                sendRequest(buttonStateDesna, '0');
+            })
+            //   reverse/forward buttons end
+            //   reverse/forward buttons end
+            //   reverse/forward buttons end
+
+
+            // let sliderVH;
+
+            function getHeightVW(y) {
+                return y / (window.innerHeight / 100);
+            }
+
+            function getNumberForSpeed(sliderVH) {
+                // console.log(255 / 100 * sliderVH)
+                return Math.round(255 / 100 * sliderVH);
+            }
+
+            const FS = document.getElementById("fs")
+            fs.addEventListener('click', () => {
+                document.documentElement.requestFullscreen()
+            })
+
+            const slajder = document.getElementById("slajder");
+            const slajderTwo = document.getElementById("slajderTwo");
+            const konzola = document.getElementById("console");
+            const konzola2 = document.getElementById("console2");
+            const slajdercolor = document.getElementById("slajdercolor");
+            const slajdercolor2 = document.getElementById("slajdercolor2");
+
+            let oldCliYOne = 0;
+            slajder.addEventListener('touchmove', (e) => {
+                let sliderVH;
+
+                if (e.changedTouches[0].target.id == 'slajder') {
+                    let clY = e.changedTouches[0].clientY
+                    let sliderVH = 100 - getHeightVW(clY)
+
+                    if (getNumberForSpeed(sliderVH) > oldCliYOne + 9 || getNumberForSpeed(sliderVH) < oldCliYOne - 9) {
+                        oldCliYOne = getNumberForSpeed(sliderVH);
+                        slajdercolor.style.top = getHeightVW(e.changedTouches[0].clientY) + 'vh';
+                        konzola.innerText = getNumberForSpeed(sliderVH)
+                        sendRequest(buttonStateLeva, getNumberForSpeed(sliderVH))
+                    }
+
+
+                }
+
+                if (e.changedTouches[1].target.id == 'slajder') {
+                    slajdercolor.style.top = getHeightVW(e.changedTouches[1].clientY) + 'vh';
+                    let clY = e.changedTouches[1].clientY
+                    let sliderVH = 100 - getHeightVW(clY)
+
+                    if (getNumberForSpeed(sliderVH) > oldCliYOne + 9 || getNumberForSpeed(sliderVH) < oldCliYOne - 9) {
+                        oldCliYOne = getNumberForSpeed(sliderVH);
+                        slajdercolor.style.top = getHeightVW(e.changedTouches[1].clientY) + 'vh';
+                        konzola.innerText = getNumberForSpeed(sliderVH)
+                        sendRequest(buttonStateLeva, getNumberForSpeed(sliderVH))
+                    }
+
+                }
+
+            })
+
+            slajder.addEventListener('touchend', (e) => {
+                if (e.changedTouches[0].target.id == 'slajder') {
+                    slajdercolor.style.top = '100vh';
+                    konzola.innerText = 0
+                    sendRequest(buttonStateLeva, 0)
+                }
+                if (e.changedTouches[1].target.id == 'slajder') {
+                    slajdercolor.style.top = '100vh';
+                    konzola.innerText = 0
+                    sendRequest(buttonStateLeva, 0)
+                }
+            })
+
+
+            // slajderTWO
+            // slajderTWO
+            // slajderTWO
+            let oldCliYTwo = 0;
+            slajderTwo.addEventListener('touchmove', (e) => {
+                let sliderVH2;
+
+                if (e.changedTouches[0].target.id == 'slajderTwo') {
+                    let clY2 = e.changedTouches[0].clientY
+                    let sliderVH2 = 100 - getHeightVW(clY2)
+
+                    if (getNumberForSpeed(sliderVH2) > oldCliYTwo + 9 || getNumberForSpeed(sliderVH2) < oldCliYTwo - 9) {
+                        oldCliYTwo = getNumberForSpeed(sliderVH2);
+                        slajdercolor2.style.top = getHeightVW(e.changedTouches[0].clientY) + 'vh';
+                        konzola2.innerText = getNumberForSpeed(sliderVH2)
+                        sendRequest(buttonStateDesna, getNumberForSpeed(sliderVH2))
+                    }
+                }
+
+                if (e.changedTouches[1].target.id == 'slajderTwo') {
+                    slajdercolor2.style.top = getHeightVW(e.changedTouches[1].clientY) + 'vh';
+                    let clY2 = e.changedTouches[1].clientY
+                    sliderVH2 = 100 - getHeightVW(clY2)
+                    konzola2.innerText = getNumberForSpeed(sliderVH2)
+                    sendRequest(buttonStateDesna, getNumberForSpeed(sliderVH2))
+
+                }
+
+            })
+
+            slajderTwo.addEventListener('touchend', (e) => {
+                if (e.changedTouches[0].target.id == 'slajderTwo') {
+                    slajdercolor2.style.top = '100vh';
+                    konzola2.innerText = 0
+                    sendRequest(buttonStateDesna, 0)
+                }
+                if (e.changedTouches[1].target.id == 'slajderTwo') {
+                    slajdercolor2.style.top = '100vh';
+                    konzola2.innerText = 0
+                    sendRequest(buttonStateDesna, 0)
+                }
+            })
+
+    </script>
+
+
+</body></html>
